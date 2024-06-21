@@ -7,6 +7,7 @@ import (
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/AntonovIv/post_graphQlservice/graph"
+	"github.com/AntonovIv/post_graphQlservice/internal/service/posts"
 	graphTr "github.com/AntonovIv/post_graphQlservice/internal/transport/graph"
 )
 
@@ -14,7 +15,11 @@ func main() {
 
 	port := "8080"
 
-	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graphTr.Resolver{}}))
+	service := posts.New()
+
+	resolver := graphTr.New(service)
+
+	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: resolver}))
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", srv)
