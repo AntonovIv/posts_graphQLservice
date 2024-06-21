@@ -13,9 +13,9 @@ import (
 )
 
 // CreatePost is the resolver for the CreatePost field.
-func (r *mutationResolver) CreatePost(ctx context.Context, post model.CreatePostReq) (*model.PostListEl, error) {
-	panic(fmt.Errorf("not implemented: CreatePost - CreatePost"))
-}
+// func (r *mutationResolver) CreatePost(ctx context.Context, post model.CreatePostReq) (*model.PostListEl, error) {
+// 	panic(fmt.Errorf("not implemented: CreatePost - CreatePost"))
+// }
 
 // CreateComment is the resolver for the CreateComment field.
 func (r *mutationResolver) CreateComment(ctx context.Context, input model.CreateCommentReq) (*model.Comment, error) {
