@@ -4,27 +4,45 @@ type Post {
   author: String!
   content: String!
   commentsAllowed: Boolean!
+  comments: [Comment!]
 }
 
-type PostResp {
-  id: ID!
-  name: String!
-  author: String!
-  content: String!
-}
-
-input InputPost {
+input CreatePostReq {
   name: String!
   content: String!
   author: String!
   commentsAllowed: Boolean!
 }
 
+type PostListEl {
+  id: ID!
+  name: String!
+  author: String!
+  content: String!
+}
+
+type Comment {
+  id: ID!
+  author: String!
+  content: String!
+  post: ID!
+  replies: [Comment!]
+  replyTo: ID
+}
+
+input CreateCommentReq {
+  author: String!
+  content: String!
+  post: ID!
+  replyTo: ID
+}
+
 type Query {
-  GetAllPosts(page: Int!): [PostResp!]!
+  GetAllPosts: [PostListEl!]!
   GetPostById(id: Int!): Post!
 }
 
 type Mutation {
-  CreatePost(post: InputPost!): PostResp!
+  CreatePost(post: CreatePostReq!): PostListEl!
+  CreateComment(input: CreateCommentReq!): Comment!
 }

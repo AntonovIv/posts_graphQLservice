@@ -7,13 +7,13 @@ import (
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/AntonovIv/post_graphQlservice/graph"
-
 	graphTr "github.com/AntonovIv/post_graphQlservice/internal/transport/graph"
 )
 
 func main() {
 
 	port := "8080"
+
 	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graphTr.Resolver{}}))
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))

@@ -2,7 +2,23 @@
 
 package model
 
-type InputPost struct {
+type Comment struct {
+	ID      string     `json:"id"`
+	Author  string     `json:"author"`
+	Content string     `json:"content"`
+	Post    string     `json:"post"`
+	Replies []*Comment `json:"replies,omitempty"`
+	ReplyTo *string    `json:"replyTo,omitempty"`
+}
+
+type CreateCommentReq struct {
+	Author  string  `json:"author"`
+	Content string  `json:"content"`
+	Post    string  `json:"post"`
+	ReplyTo *string `json:"replyTo,omitempty"`
+}
+
+type CreatePostReq struct {
 	Name            string `json:"name"`
 	Content         string `json:"content"`
 	Author          string `json:"author"`
@@ -13,14 +29,15 @@ type Mutation struct {
 }
 
 type Post struct {
-	ID              string `json:"id"`
-	Name            string `json:"name"`
-	Author          string `json:"author"`
-	Content         string `json:"content"`
-	CommentsAllowed bool   `json:"commentsAllowed"`
+	ID              string     `json:"id"`
+	Name            string     `json:"name"`
+	Author          string     `json:"author"`
+	Content         string     `json:"content"`
+	CommentsAllowed bool       `json:"commentsAllowed"`
+	Comments        []*Comment `json:"comments,omitempty"`
 }
 
-type PostResp struct {
+type PostListEl struct {
 	ID      string `json:"id"`
 	Name    string `json:"name"`
 	Author  string `json:"author"`
