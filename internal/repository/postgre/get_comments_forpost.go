@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"github.com/AntonovIv/post_graphQlservice/graph/model"
-	"github.com/AntonovIv/post_graphQlservice/internal/models"
 	"github.com/georgysavva/scany/v2/pgxscan"
 )
 
@@ -17,13 +16,10 @@ func (r *repository) GetCommentsForPost(ctx context.Context, obj *model.Post) ([
 	var comments []model.Comment
 
 	err := pgxscan.Select(ctx, r.db.DB(ctx), &comments, query, obj.ID)
-
-	if pgxscan.NotFound(err) {
-		return nil, models.ErrNotFound
-	} else if err != nil {
-		return nil, fmt.Errorf("pgxscan get: %w", err)
+	if err != nil {
+		return nil, fmt.Errorf("pgxscan get comments for post err: %w", err)
 	}
-	fmt.Println(comments)
+
 	return comments, nil
 
 }

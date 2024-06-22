@@ -6,13 +6,25 @@ package graph
 
 import (
 	"context"
+	"errors"
 
 	"github.com/AntonovIv/post_graphQlservice/graph/model"
+	"github.com/AntonovIv/post_graphQlservice/internal/models"
+	"github.com/vektah/gqlparser/v2/gqlerror"
 )
 
 // GetAllPosts is the resolver for the GetAllPosts field.
 func (r *queryResolver) GetAllPosts(ctx context.Context) ([]*model.PostListEl, error) {
 	postAllResp, err := r.postService.GetAllPosts(ctx)
-	return postAllResp, err
+	if errors.Is(err, models.ErrNotFound) {
+		return nil, &gqlerror.Error{
+			Message: "posts not found",
+		}
+	} else if err != nil {
+		return nil, &gqlerror.Error{
+			Message: "internal server error",
+		}
+	}
 
+	return postAllResp, nil
 }

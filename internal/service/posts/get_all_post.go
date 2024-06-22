@@ -2,14 +2,19 @@ package posts
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/AntonovIv/post_graphQlservice/graph/model"
 )
 
 func (p *postService) GetAllPosts(ctx context.Context) ([]*model.PostListEl, error) {
 	postAllResp, err := p.repo.GetAllPosts(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("service get all posts err: %w", err)
+	}
 
 	res := make([]*model.PostListEl, len(postAllResp))
+
 	for i, post := range postAllResp {
 		res[i] = &model.PostListEl{
 			ID:      post.ID,
@@ -19,5 +24,5 @@ func (p *postService) GetAllPosts(ctx context.Context) ([]*model.PostListEl, err
 		}
 	}
 
-	return res, err
+	return res, nil
 }

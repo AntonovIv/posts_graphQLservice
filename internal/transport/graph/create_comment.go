@@ -8,11 +8,17 @@ import (
 	"context"
 
 	"github.com/AntonovIv/post_graphQlservice/graph/model"
+	"github.com/vektah/gqlparser/v2/gqlerror"
 )
 
 // CreateComment is the resolver for the CreateComment field.
 func (r *mutationResolver) CreateComment(ctx context.Context, input model.CreateCommentReq) (*model.Comment, error) {
 	commentResp, err := r.postService.CreateComment(ctx, input)
-	return commentResp, err
+	if err != nil {
+		return nil, &gqlerror.Error{
+			Message: "internal server error",
+		}
+	}
+	return commentResp, nil
 
 }

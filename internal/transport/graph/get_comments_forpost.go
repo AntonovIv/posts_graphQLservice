@@ -8,10 +8,17 @@ import (
 	"context"
 
 	"github.com/AntonovIv/post_graphQlservice/graph/model"
+	"github.com/vektah/gqlparser/v2/gqlerror"
 )
 
 // Comments is the resolver for the comments field.
 func (r *postResolver) Comments(ctx context.Context, obj *model.Post) ([]*model.Comment, error) {
 	commentsResp, err := r.postService.GetCommentsForPost(ctx, obj)
-	return commentsResp, err
+	if err != nil {
+		return nil, &gqlerror.Error{
+			Message: "internal server error",
+		}
+	}
+
+	return commentsResp, nil
 }

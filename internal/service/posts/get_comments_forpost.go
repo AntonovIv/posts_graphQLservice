@@ -2,12 +2,16 @@ package posts
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/AntonovIv/post_graphQlservice/graph/model"
 )
 
 func (p *postService) GetCommentsForPost(ctx context.Context, obj *model.Post) ([]*model.Comment, error) {
 	commentsResp, err := p.repo.GetCommentsForPost(ctx, obj)
+	if err != nil {
+		return nil, fmt.Errorf("service get comments for post err: %w", err)
+	}
 
 	res := make([]*model.Comment, len(commentsResp))
 
@@ -20,5 +24,5 @@ func (p *postService) GetCommentsForPost(ctx context.Context, obj *model.Post) (
 			ReplyTo: comment.ReplyTo,
 		}
 	}
-	return res, err
+	return res, nil
 }

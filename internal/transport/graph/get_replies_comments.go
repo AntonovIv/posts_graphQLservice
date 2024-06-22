@@ -8,10 +8,17 @@ import (
 	"context"
 
 	"github.com/AntonovIv/post_graphQlservice/graph/model"
+	"github.com/vektah/gqlparser/v2/gqlerror"
 )
 
 // Replies is the resolver for the replies field.
 func (r *commentResolver) Replies(ctx context.Context, obj *model.Comment) ([]*model.Comment, error) {
 	rsCommentsResp, err := r.postService.GetRepliesComments(ctx, obj)
-	return rsCommentsResp, err
+	if err != nil {
+		return nil, &gqlerror.Error{
+			Message: "internal server error",
+		}
+	}
+
+	return rsCommentsResp, nil
 }
