@@ -11,9 +11,15 @@ import (
 )
 
 type postsSrv interface {
-	CreatePost(context.Context, model.CreatePostReq) (model.PostListEl, error)
-	//GetPostById(id int) (model.Post, error)
-	// GetAllPosts(page, pageSize *int) ([]models.Post, error)
+	//post metods
+	CreatePost(context.Context, model.CreatePostReq) (*model.PostListEl, error)
+	GetPostByID(context.Context, int) (*model.Post, error)
+	GetAllPosts(context.Context) ([]*model.PostListEl, error)
+
+	//comment methods
+	CreateComment(context.Context, model.CreateCommentReq) (*model.Comment, error)
+	GetCommentsForPost(context.Context, *model.Post) ([]*model.Comment, error)
+	GetRepliesComments(context.Context, *model.Comment) ([]*model.Comment, error)
 }
 
 type Resolver struct {

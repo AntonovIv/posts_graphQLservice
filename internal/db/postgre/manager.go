@@ -1,4 +1,4 @@
-package postgres
+package postgre
 
 import (
 	"context"
@@ -14,7 +14,7 @@ import (
 	"github.com/AntonovIv/post_graphQlservice/internal/service"
 )
 
-//go:embed-migrations/*.sql
+//go:embed migrations/*.sql
 var migrations embed.FS
 
 type QueryManager interface {
@@ -71,7 +71,6 @@ func New(ctx context.Context, config Config) (*manager, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	return &manager{
 		db: pool,
 	}, nil

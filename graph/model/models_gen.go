@@ -6,7 +6,7 @@ type Comment struct {
 	ID      string     `json:"id"`
 	Author  string     `json:"author"`
 	Content string     `json:"content"`
-	Post    string     `json:"post"`
+	Post    string     `json:"post" db:"postid"`
 	Replies []*Comment `json:"replies,omitempty"`
 	ReplyTo *string    `json:"replyTo,omitempty"`
 }
