@@ -4,7 +4,7 @@ type Post {
   author: String!
   content: String!
   commentsAllowed: Boolean!
-  comments: [Comment!]
+  comments(limit: Int, offset: Int): [Comment!]
 }
 
 input CreatePostReq {
@@ -26,7 +26,7 @@ type Comment {
   author: String!
   content: String!
   post: ID!
-  replies: [Comment!]
+  replies(limit: Int, offset: Int): [Comment!]
   replyTo: ID
 }
 

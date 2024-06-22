@@ -19,8 +19,8 @@ type postsSrv interface {
 
 	//comment methods
 	CreateComment(context.Context, model.CreateCommentReq) (*model.Comment, error)
-	GetCommentsForPost(context.Context, *model.Post) ([]*model.Comment, error)
-	GetRepliesComments(context.Context, *model.Comment) ([]*model.Comment, error)
+	GetCommentsForPost(context.Context, *model.Post, int, int) ([]*model.Comment, error)
+	GetRepliesComments(context.Context, *model.Comment, int, int) ([]*model.Comment, error)
 }
 
 type Resolver struct {

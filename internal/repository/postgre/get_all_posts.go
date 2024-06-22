@@ -16,7 +16,7 @@ func (r *repository) GetAllPosts(ctx context.Context) ([]model.PostListEl, error
 	var postAll []model.PostListEl
 
 	err := pgxscan.Select(ctx, r.db.DB(ctx), &postAll, query)
-	if pgxscan.NotFound(err) {
+	if len(postAll) == 0 {
 		return nil, models.ErrNotFound
 	} else if err != nil {
 		return nil, fmt.Errorf("pgxscan GetAllPosts err: %w", err)

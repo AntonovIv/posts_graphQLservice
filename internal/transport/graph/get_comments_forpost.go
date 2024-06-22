@@ -9,14 +9,16 @@ import (
 	"log/slog"
 
 	"github.com/AntonovIv/post_graphQlservice/graph/model"
+	"github.com/AntonovIv/post_graphQlservice/internal/validation"
 	"github.com/vektah/gqlparser/v2/gqlerror"
 )
 
 // Comments is the resolver for the comments field.
-func (r *postResolver) Comments(ctx context.Context, obj *model.Post) ([]*model.Comment, error) {
+func (r *postResolver) Comments(ctx context.Context, obj *model.Post, limit *int, offset *int) ([]*model.Comment, error) {
 	r.logger.DebugContext(ctx, "get comments request")
 
-	commentsResp, err := r.postService.GetCommentsForPost(ctx, obj)
+	lim, offs := validation.PagingValidate(limit, offset)
+	commentsResp, err := r.postService.GetCommentsForPost(ctx, obj, lim, offs)
 	if err != nil {
 		r.logger.ErrorContext(ctx, "get comments request: err",
 			slog.Any("err", err))
@@ -28,3 +30,20 @@ func (r *postResolver) Comments(ctx context.Context, obj *model.Post) ([]*model.
 
 	return commentsResp, nil
 }
+
+// Comments is the resolver for the comments field.
+// func (r *postResolver) Comments(ctx context.Context, obj *model.Post, limit *int, offset *int) ([]*model.Comment, error) {
+// 	r.logger.DebugContext(ctx, "get comments request")
+
+// 	commentsResp, err := r.postService.GetCommentsForPost(ctx, obj)
+// 	if err != nil {
+// 		r.logger.ErrorContext(ctx, "get comments request: err",
+// 			slog.Any("err", err))
+
+// 		return nil, &gqlerror.Error{
+// 			Message: "internal server error",
+// 		}
+// 	}
+
+// 	return commentsResp, nil
+// }

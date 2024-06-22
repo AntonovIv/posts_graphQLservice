@@ -13,14 +13,11 @@ type postRepo interface {
 	CreatePost(context.Context, model.CreatePostReq) (model.PostListEl, error)
 	GetPostByID(context.Context, int) (model.Post, error)
 	GetAllPosts(ctx context.Context) ([]model.PostListEl, error)
-	GetCommentsForPost(context.Context, *model.Post) ([]model.Comment, error)
-	GetRepliesComments(context.Context, *model.Comment) ([]model.Comment, error)
+
 	CreateComment(context.Context, model.CreateCommentReq) (model.Comment, error)
 
-	// Get(ctx context.Context, key string) (*model.Record, error)
-	// GetAll(ctx context.Context) ([]model.Record, error)
-	// Set(ctx context.Context, record model.Record) error
-	// Delete(ctx context.Context, key string) error
+	GetCommentsForPost(context.Context, *model.Post, int, int) ([]model.Comment, error)
+	GetRepliesComments(context.Context, *model.Comment, int, int) ([]model.Comment, error)
 }
 
 type postService struct {

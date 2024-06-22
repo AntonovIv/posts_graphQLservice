@@ -20,7 +20,7 @@ func (r *queryResolver) GetAllPosts(ctx context.Context) ([]*model.PostListEl, e
 
 	postAllResp, err := r.postService.GetAllPosts(ctx)
 	if errors.Is(err, models.ErrNotFound) {
-		r.logger.ErrorContext(ctx, "get all posts request: err",
+		r.logger.InfoContext(ctx, "get all posts request: err",
 			slog.Any("err", err))
 
 		return nil, &gqlerror.Error{

@@ -9,6 +9,7 @@ import (
 	"log/slog"
 
 	"github.com/AntonovIv/post_graphQlservice/graph/model"
+	"github.com/AntonovIv/post_graphQlservice/internal/validation"
 	"github.com/vektah/gqlparser/v2/gqlerror"
 )
 
@@ -16,6 +17,14 @@ import (
 func (r *mutationResolver) CreateComment(ctx context.Context, input model.CreateCommentReq) (*model.Comment, error) {
 	r.logger.DebugContext(ctx, "Create comment request")
 
+	if err := validation.CreateCommentValidate(input); err != nil {
+		r.logger.InfoContext(ctx, "create comment request: err",
+			slog.Any("err", err))
+
+		return nil, &gqlerror.Error{
+			Message: "bad request: " + err.Error(),
+		}
+	}
 	commentResp, err := r.postService.CreateComment(ctx, input)
 	if err != nil {
 		r.logger.ErrorContext(ctx, "Create comment request inernal err",
