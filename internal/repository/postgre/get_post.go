@@ -21,7 +21,7 @@ func (r *repository) GetPostByID(ctx context.Context, id int) (model.Post, error
 	if pgxscan.NotFound(err) {
 		return model.Post{}, models.ErrNotFound
 	} else if err != nil {
-		return model.Post{}, fmt.Errorf("pgxscan get post err: %w", err)
+		return model.Post{}, fmt.Errorf("pgxscan GetPostByID err: %w", err)
 	}
 
 	return post, nil

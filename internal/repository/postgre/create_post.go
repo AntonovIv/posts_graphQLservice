@@ -14,7 +14,7 @@ func (r *repository) CreatePost(ctx context.Context, post model.CreatePostReq) (
 	_, err := r.db.DB(ctx).Exec(ctx, query, post.Name,
 		post.Content, post.Author, post.CommentsAllowed)
 	if err != nil {
-		return model.PostListEl{}, fmt.Errorf("repository create post err: %w", err)
+		return model.PostListEl{}, fmt.Errorf("repository CreatePost err: %w", err)
 	}
 
 	return model.PostListEl{}, nil

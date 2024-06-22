@@ -10,7 +10,7 @@ import (
 func (p *postService) GetCommentsForPost(ctx context.Context, obj *model.Post) ([]*model.Comment, error) {
 	commentsResp, err := p.repo.GetCommentsForPost(ctx, obj)
 	if err != nil {
-		return nil, fmt.Errorf("service get comments for post err: %w", err)
+		return nil, fmt.Errorf("service GetCommentsForPost err: %w", err)
 	}
 
 	res := make([]*model.Comment, len(commentsResp))

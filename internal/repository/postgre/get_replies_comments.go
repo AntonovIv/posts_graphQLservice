@@ -16,7 +16,7 @@ func (r *repository) GetRepliesComments(ctx context.Context, obj *model.Comment)
 
 	err := pgxscan.Select(ctx, r.db.DB(ctx), &rsComments, query, obj.ID)
 	if err != nil {
-		return nil, fmt.Errorf("pgxscan get reply comments err: %w", err)
+		return nil, fmt.Errorf("pgxscan GetRepliesComments err: %w", err)
 	}
 
 	return rsComments, nil

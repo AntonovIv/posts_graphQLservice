@@ -6,6 +6,7 @@ package graph
 
 import (
 	"context"
+	"log/slog"
 
 	"github.com/AntonovIv/post_graphQlservice/graph/model"
 	"github.com/vektah/gqlparser/v2/gqlerror"
@@ -13,8 +14,13 @@ import (
 
 // CreateComment is the resolver for the CreateComment field.
 func (r *mutationResolver) CreateComment(ctx context.Context, input model.CreateCommentReq) (*model.Comment, error) {
+	r.logger.DebugContext(ctx, "Create comment request")
+
 	commentResp, err := r.postService.CreateComment(ctx, input)
 	if err != nil {
+		r.logger.ErrorContext(ctx, "Create comment request inernal err",
+			slog.Any("err", err))
+
 		return nil, &gqlerror.Error{
 			Message: "internal server error",
 		}

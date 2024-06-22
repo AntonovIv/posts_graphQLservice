@@ -10,7 +10,7 @@ import (
 func (p *postService) CreatePost(ctx context.Context, post model.CreatePostReq) (*model.PostListEl, error) {
 	postResp, err := p.repo.CreatePost(ctx, post)
 	if err != nil {
-		return nil, fmt.Errorf("create post service err: %w", err)
+		return nil, fmt.Errorf("create CreatePost err: %w", err)
 	}
 
 	return &postResp, nil

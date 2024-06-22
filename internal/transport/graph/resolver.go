@@ -6,6 +6,7 @@ package graph
 
 import (
 	"context"
+	"log/slog"
 
 	"github.com/AntonovIv/post_graphQlservice/graph/model"
 )
@@ -24,11 +25,13 @@ type postsSrv interface {
 
 type Resolver struct {
 	postService postsSrv
+	logger      *slog.Logger
 }
 
-func New(postService postsSrv) *Resolver {
+func New(postService postsSrv, logger *slog.Logger) *Resolver {
 	srv := &Resolver{
 		postService: postService,
+		logger:      logger,
 	}
 	return srv
 }

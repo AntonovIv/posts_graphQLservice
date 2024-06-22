@@ -14,7 +14,7 @@ func (r *repository) CreateComment(ctx context.Context, input model.CreateCommen
 	_, err := r.db.DB(ctx).Exec(ctx, query,
 		input.Content, input.Author, input.Post, input.ReplyTo)
 	if err != nil {
-		return model.Comment{}, fmt.Errorf("repository create comment err: %w", err)
+		return model.Comment{}, fmt.Errorf("repository CreateComment err: %w", err)
 
 	}
 

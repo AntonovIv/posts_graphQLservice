@@ -7,6 +7,7 @@ package graph
 import (
 	"context"
 	"errors"
+	"log/slog"
 
 	"github.com/AntonovIv/post_graphQlservice/graph/model"
 	"github.com/AntonovIv/post_graphQlservice/internal/models"
@@ -15,12 +16,20 @@ import (
 
 // GetPostByID is the resolver for the GetPostById field.
 func (r *queryResolver) GetPostByID(ctx context.Context, id int) (*model.Post, error) {
+	r.logger.DebugContext(ctx, "getpostbyid request")
+
 	postResp, err := r.postService.GetPostByID(ctx, id)
 	if errors.Is(err, models.ErrNotFound) {
+		r.logger.ErrorContext(ctx, "getPostById request: err",
+			slog.Any("err", err))
+
 		return nil, &gqlerror.Error{
 			Message: "post not found",
 		}
 	} else if err != nil {
+		r.logger.ErrorContext(ctx, "getPostById request: err",
+			slog.Any("err", err))
+
 		return nil, &gqlerror.Error{
 			Message: "internal server error",
 		}

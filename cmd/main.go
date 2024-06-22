@@ -3,7 +3,9 @@ package main
 import (
 	"context"
 	"log"
+	"log/slog"
 	"net/http"
+	"os"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
@@ -19,6 +21,8 @@ func main() {
 
 	ctx := context.Background()
 	port := "8080"
+
+	logger := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug}))
 
 	testcfg := manager.Config{
 		User:     "user",
@@ -36,7 +40,7 @@ func main() {
 
 	service := posts.New(postgresRepo)
 
-	resolver := graphTr.New(service)
+	resolver := graphTr.New(service, logger)
 
 	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: resolver}))
 

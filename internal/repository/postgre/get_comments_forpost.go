@@ -17,7 +17,7 @@ func (r *repository) GetCommentsForPost(ctx context.Context, obj *model.Post) ([
 
 	err := pgxscan.Select(ctx, r.db.DB(ctx), &comments, query, obj.ID)
 	if err != nil {
-		return nil, fmt.Errorf("pgxscan get comments for post err: %w", err)
+		return nil, fmt.Errorf("pgxscan GetCommentsForPost err: %w", err)
 	}
 
 	return comments, nil

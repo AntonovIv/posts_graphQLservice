@@ -19,7 +19,7 @@ func (r *repository) GetAllPosts(ctx context.Context) ([]model.PostListEl, error
 	if pgxscan.NotFound(err) {
 		return nil, models.ErrNotFound
 	} else if err != nil {
-		return nil, fmt.Errorf("pgxscan get all posts: %w", err)
+		return nil, fmt.Errorf("pgxscan GetAllPosts err: %w", err)
 	}
 
 	return postAll, nil

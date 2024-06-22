@@ -6,6 +6,7 @@ package graph
 
 import (
 	"context"
+	"log/slog"
 
 	"github.com/AntonovIv/post_graphQlservice/graph/model"
 	"github.com/vektah/gqlparser/v2/gqlerror"
@@ -13,8 +14,13 @@ import (
 
 // Comments is the resolver for the comments field.
 func (r *postResolver) Comments(ctx context.Context, obj *model.Post) ([]*model.Comment, error) {
+	r.logger.DebugContext(ctx, "get comments request")
+
 	commentsResp, err := r.postService.GetCommentsForPost(ctx, obj)
 	if err != nil {
+		r.logger.ErrorContext(ctx, "get comments request: err",
+			slog.Any("err", err))
+
 		return nil, &gqlerror.Error{
 			Message: "internal server error",
 		}

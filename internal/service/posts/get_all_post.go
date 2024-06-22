@@ -10,7 +10,7 @@ import (
 func (p *postService) GetAllPosts(ctx context.Context) ([]*model.PostListEl, error) {
 	postAllResp, err := p.repo.GetAllPosts(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("service get all posts err: %w", err)
+		return nil, fmt.Errorf("service GetAllPosts err: %w", err)
 	}
 
 	res := make([]*model.PostListEl, len(postAllResp))
