@@ -46,3 +46,7 @@ type Mutation {
   CreatePost(post: CreatePostReq!): PostListEl!
   CreateComment(input: CreateCommentReq!): Comment!
 }
+
+type Subscription {
+  CommentSubscription(postId: Int!): Comment!
+}

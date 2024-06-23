@@ -9,6 +9,7 @@ import (
 	"log/slog"
 
 	"github.com/AntonovIv/post_graphQlservice/graph/model"
+	"github.com/AntonovIv/post_graphQlservice/internal/service/posts"
 )
 
 type postsSrv interface {
@@ -21,6 +22,8 @@ type postsSrv interface {
 	CreateComment(context.Context, model.CreateCommentReq) (*model.Comment, error)
 	GetCommentsForPost(context.Context, *model.Post, int, int) ([]*model.Comment, error)
 	GetRepliesComments(context.Context, *model.Comment, int, int) ([]*model.Comment, error)
+
+	posts.ObserverPool
 }
 
 type Resolver struct {

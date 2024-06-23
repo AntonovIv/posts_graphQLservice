@@ -30,20 +30,3 @@ func (r *commentResolver) Replies(ctx context.Context, obj *model.Comment, limit
 
 	return rsCommentsResp, nil
 }
-
-// Replies is the resolver for the replies field.
-// func (r *commentResolver) Replies(ctx context.Context, obj *model.Comment, limit *int, offset *int) ([]*model.Comment, error) {
-// 	r.logger.DebugContext(ctx, "get replydComments request")
-
-// 	rsCommentsResp, err := r.postService.GetRepliesComments(ctx, obj)
-// 	if err != nil {
-// 		r.logger.ErrorContext(ctx, "get replyComments request: err",
-// 			slog.Any("err", err))
-
-// 		return nil, &gqlerror.Error{
-// 			Message: "internal server error",
-// 		}
-// 	}
-
-// 	return rsCommentsResp, nil
-// }
