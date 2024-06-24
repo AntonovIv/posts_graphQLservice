@@ -40,8 +40,6 @@ type Config struct {
 	Name     string `yaml:"name"`
 }
 
-// go get github.com/pressly/goose
-
 func New(ctx context.Context, config Config) (*manager, error) {
 	connString := fmt.Sprintf("postgresql://%s:%s@%s:%d/%s?sslmode=disable", config.User, config.Password, config.Hostname, config.Port, config.Name)
 	conf, err := pgx.ParseConfig(connString)

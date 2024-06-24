@@ -3,7 +3,6 @@ package postgre
 import (
 	"context"
 	"fmt"
-	"log"
 
 	"github.com/AntonovIv/post_graphQlservice/graph/model"
 	"github.com/AntonovIv/post_graphQlservice/internal/models"
@@ -15,7 +14,6 @@ func (r *repository) GetPostByID(ctx context.Context, id int) (model.Post, error
 	query := `select id, name, author, content, comments_allowed 
 	from posts where id = $1`
 
-	log.Println(query)
 	var post model.Post
 
 	err := pgxscan.Get(ctx, r.db.DB(ctx), &post, query, id)

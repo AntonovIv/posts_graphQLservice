@@ -3,7 +3,6 @@ package postgre
 import (
 	"context"
 	"fmt"
-	"log"
 
 	"github.com/AntonovIv/post_graphQlservice/graph/model"
 	"github.com/AntonovIv/post_graphQlservice/internal/models"
@@ -13,7 +12,6 @@ import (
 func (r *repository) GetAllPosts(ctx context.Context) ([]model.PostListEl, error) {
 	query := `select id, name, author, content 
 	from posts`
-	log.Println(query)
 	var postAll []model.PostListEl
 
 	err := pgxscan.Select(ctx, r.db.DB(ctx), &postAll, query)

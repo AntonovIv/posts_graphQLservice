@@ -6,20 +6,26 @@ package graph
 
 import (
 	"context"
+	"errors"
 	"log/slog"
 
 	"github.com/AntonovIv/post_graphQlservice/graph/model"
+	"github.com/AntonovIv/post_graphQlservice/internal/models"
 	"github.com/AntonovIv/post_graphQlservice/internal/validation"
 	"github.com/vektah/gqlparser/v2/gqlerror"
 )
 
 // Comments is the resolver for the comments field.
-func (r *postResolver) Comments(ctx context.Context, obj *model.Post, limit *int, offset *int) ([]*model.Comment, error) {
+func (r *postResolver) Comments(ctx context.Context, post *model.Post, limit *int, offset *int) ([]*model.Comment, error) {
 	r.logger.DebugContext(ctx, "get comments request")
 
 	lim, offs := validation.PagingValidate(limit, offset)
-	commentsResp, err := r.postService.GetCommentsForPost(ctx, obj, lim, offs)
-	if err != nil {
+	commentsResp, err := r.postService.GetCommentsForPost(ctx, post, lim, offs)
+	if errors.Is(err, models.ErrNotFound) {
+		return nil, &gqlerror.Error{
+			Message: "bad request",
+		}
+	} else if err != nil {
 		r.logger.ErrorContext(ctx, "get comments request: err",
 			slog.Any("err", err))
 

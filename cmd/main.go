@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"log"
 	"log/slog"
 	"net/http"
@@ -11,9 +10,8 @@ import (
 	"github.com/99designs/gqlgen/graphql/handler/extension"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/AntonovIv/post_graphQlservice/graph"
-	manager "github.com/AntonovIv/post_graphQlservice/internal/db/postgre"
 
-	repo "github.com/AntonovIv/post_graphQlservice/internal/repository/postgre"
+	"github.com/AntonovIv/post_graphQlservice/internal/repository/mem"
 	"github.com/AntonovIv/post_graphQlservice/internal/service/posts"
 	"github.com/AntonovIv/post_graphQlservice/internal/service/posts/subscription"
 	graphTr "github.com/AntonovIv/post_graphQlservice/internal/transport/graph"
@@ -21,27 +19,29 @@ import (
 
 func main() {
 
-	ctx := context.Background()
+	// ctx := context.Background()
 	port := "8080"
 
 	logger := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug}))
 
-	testcfg := manager.Config{
-		User:     "user",
-		Password: "password",
-		Hostname: "localhost",
-		Port:     5432,
-		Name:     "record_db",
-	}
+	// testcfg := manager.Config{
+	// 	User:     "user",
+	// 	Password: "password",
+	// 	Hostname: "localhost",
+	// 	Port:     5432,
+	// 	Name:     "record_db",
+	// }
 
-	postgresManager, err := manager.New(ctx, testcfg)
-	if err != nil {
-		log.Fatal("failed to create postgres manager: ", err)
-	}
+	// postgresManager, err := manager.New(ctx, testcfg)
+	// if err != nil {
+	// 	log.Fatal("failed to create postgres manager: ", err)
+	// }
 
-	postgresRepo := repo.New(postgresManager)
+	// postgresRepo := repo.New(postgresManager)
+	memrepo := mem.NewInMemDb(100)
+
 	obsPool := subscription.NewObserverPool()
-	service := posts.New(postgresRepo, obsPool)
+	service := posts.New(memrepo, obsPool)
 
 	resolver := graphTr.New(service, logger)
 

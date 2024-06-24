@@ -6,9 +6,11 @@ package graph
 
 import (
 	"context"
+	"errors"
 	"log/slog"
 
 	"github.com/AntonovIv/post_graphQlservice/graph/model"
+	"github.com/AntonovIv/post_graphQlservice/internal/models"
 	"github.com/AntonovIv/post_graphQlservice/internal/validation"
 	"github.com/vektah/gqlparser/v2/gqlerror"
 )
@@ -19,7 +21,11 @@ func (r *commentResolver) Replies(ctx context.Context, obj *model.Comment, limit
 
 	lim, offs := validation.PagingValidate(limit, offset)
 	rsCommentsResp, err := r.postService.GetRepliesComments(ctx, obj, lim, offs)
-	if err != nil {
+	if errors.Is(err, models.ErrNotFound) {
+		return nil, &gqlerror.Error{
+			Message: "bad request:",
+		}
+	} else if err != nil {
 		r.logger.ErrorContext(ctx, "get replyComments request: err",
 			slog.Any("err", err))
 
