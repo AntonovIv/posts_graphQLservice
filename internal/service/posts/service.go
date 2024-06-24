@@ -5,7 +5,6 @@ import (
 
 	"github.com/AntonovIv/post_graphQlservice/graph/model"
 	serviceTm "github.com/AntonovIv/post_graphQlservice/internal/service"
-	"github.com/AntonovIv/post_graphQlservice/internal/service/posts/subscription"
 )
 
 type postRepo interface {
@@ -13,7 +12,7 @@ type postRepo interface {
 
 	CreatePost(context.Context, model.CreatePostReq) (model.PostListEl, error)
 	GetPostByID(context.Context, int) (model.Post, error)
-	GetAllPosts(ctx context.Context) ([]model.PostListEl, error)
+	GetAllPosts(context.Context) ([]model.PostListEl, error)
 
 	CreateComment(context.Context, model.CreateCommentReq) (model.Comment, error)
 
@@ -21,19 +20,19 @@ type postRepo interface {
 	GetRepliesComments(context.Context, *model.Comment, int, int) ([]model.Comment, error)
 }
 type ObserverPool interface {
-	CreateObserver(postId int) (int, chan *model.Comment, error)
-	DeleteObserver(postId, chanId int) error
-	NotifyObservers(postId int, comment model.Comment) error
+	CreateObserver(int) (int, chan *model.Comment, error)
+	DeleteObserver(int, int) error
+	NotifyObservers(int, model.Comment) error
 }
 
 type postService struct {
-	repo    postRepo
-	obsPool ObserverPool
+	repo postRepo
+	ObserverPool
 }
 
-func New(repo postRepo) *postService {
+func New(repo postRepo, obsPool ObserverPool) *postService {
 	return &postService{
-		repo:    repo,
-		obsPool: subscription.NewObserverPool(),
+		repo:         repo,
+		ObserverPool: obsPool,
 	}
 }

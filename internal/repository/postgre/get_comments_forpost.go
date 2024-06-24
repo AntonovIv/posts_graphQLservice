@@ -3,6 +3,7 @@ package postgre
 import (
 	"context"
 	"fmt"
+	"log"
 
 	"github.com/AntonovIv/post_graphQlservice/graph/model"
 	"github.com/georgysavva/scany/v2/pgxscan"
@@ -23,6 +24,9 @@ func (r *repository) GetCommentsForPost(ctx context.Context, obj *model.Post, li
 	}
 	var comments []model.Comment
 
+	log.Println("\n", query)
+
+	log.Println("\n", obj.ID)
 	err := pgxscan.Select(ctx, r.db.DB(ctx), &comments, query, args...)
 	if err != nil {
 		return nil, fmt.Errorf("pgxscan GetCommentsForPost err: %w", err)

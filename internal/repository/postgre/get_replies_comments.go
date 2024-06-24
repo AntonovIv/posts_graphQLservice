@@ -3,6 +3,7 @@ package postgre
 import (
 	"context"
 	"fmt"
+	"log"
 
 	"github.com/AntonovIv/post_graphQlservice/graph/model"
 	"github.com/georgysavva/scany/v2/pgxscan"
@@ -11,7 +12,7 @@ import (
 func (r *repository) GetRepliesComments(ctx context.Context, obj *model.Comment, limit, offset int) ([]model.Comment, error) {
 	query := `select id, author, content, postid, reply_to from comments
 		where reply_to = $1`
-
+	log.Println(query)
 	args := []interface{}{obj.ID}
 
 	if limit > 0 && offset >= 0 {

@@ -18,5 +18,9 @@ func (r *repository) CreateComment(ctx context.Context, input model.CreateCommen
 
 	}
 
-	return model.Comment{}, nil
+	return model.Comment{
+		Post:    input.Post,
+		Author:  input.Author,
+		Content: input.Content,
+	}, nil
 }
