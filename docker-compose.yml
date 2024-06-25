@@ -3,15 +3,27 @@ volumes:
   data:
 
 services:
+  posts-app:
+    build: ./
+    container_name: posts-app
+    ports:
+      - ${PORT_APP}:${PORT_APP}
+    depends_on:
+      db:
+        condition: service_healthy
+
   db:
-    restart: always
     image: postgres
     volumes:
       - data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=postService
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
     ports:
-      - "5432:5432"
-
+      - ${DB_PORT}:${DB_PORT}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d postgres -U user" ]
+      interval: 3s
+      timeout: 5s
+      retries: 5
