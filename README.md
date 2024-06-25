@@ -69,7 +69,7 @@ query GetAllPosts {
 }
 ```
 
-### Получекик поста с комментариями
+### Получение поста с комментариями
 
 ```graphql
 query GetPostById {
