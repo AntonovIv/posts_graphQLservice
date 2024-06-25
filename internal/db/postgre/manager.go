@@ -33,11 +33,12 @@ type manager struct {
 }
 
 type Config struct {
-	User     string `yaml:"user"`
-	Password string `yaml:"password"`
-	Hostname string `yaml:"hostname"`
-	Port     int    `yaml:"port"`
-	Name     string `yaml:"name"`
+	DbType   string `env:"DB_TYPE" type-defolt:"postgres"`
+	User     string `env:"DB_USER" type-defolt:"postgres"`
+	Password string `env:"DB_PASSWORD" env-required:"true"`
+	Hostname string `env:"DB_HOSTNAME" env-required:"true"`
+	Port     int    `env:"DB_PORT" type-defolt:"5432"`
+	Name     string `env:"DB_NAME" type-defolt:"postService"`
 }
 
 func New(ctx context.Context, config Config) (*manager, error) {

@@ -24,7 +24,7 @@ func (r *queryResolver) GetPostByID(ctx context.Context, id int) (*model.Post, e
 			slog.Any("err", err))
 
 		return nil, &gqlerror.Error{
-			Message: "bad request",
+			Message: "bad request: " + err.Error(),
 		}
 	}
 

@@ -6,9 +6,11 @@ package graph
 
 import (
 	"context"
+	"errors"
 	"log/slog"
 
 	"github.com/AntonovIv/post_graphQlservice/graph/model"
+	"github.com/AntonovIv/post_graphQlservice/internal/models"
 	"github.com/AntonovIv/post_graphQlservice/internal/validation"
 	"github.com/vektah/gqlparser/v2/gqlerror"
 )
@@ -26,6 +28,13 @@ func (r *mutationResolver) CreateComment(ctx context.Context, input model.Create
 		}
 	}
 	commentResp, err := r.postService.CreateComment(ctx, input)
+	if errors.Is(err, models.ErrBadPostId) {
+		r.logger.InfoContext(ctx, "create comment request: err",
+			slog.Any("err", err))
+		return nil, &gqlerror.Error{
+			Message: "bad request: commenting not alowed",
+		}
+	}
 	if err != nil {
 		r.logger.ErrorContext(ctx, "Create comment request inernal err",
 			slog.Any("err", err))

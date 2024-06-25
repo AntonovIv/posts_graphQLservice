@@ -31,7 +31,7 @@ func (r *MemDb) GetRepliesComments(ctx context.Context, com *model.Comment, limi
 		_ = copy(hres, res[limit*offset:])
 		return hres, nil
 	}
-
+	//пахнущие костыли исправить
 	hres := make([]model.Comment, len(res[limit*offset:(limit*offset)+limit]))
 	_ = copy(hres, res[limit*offset:(limit*offset)+limit])
 

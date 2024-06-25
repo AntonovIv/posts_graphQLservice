@@ -20,3 +20,5 @@ func New(db postgreMr.QueryManager) *repository {
 func (r *repository) WithTransaction(ctx context.Context, fn service.TxFunc) error {
 	return r.db.WithTransaction(ctx, fn)
 }
+
+//go:generate mockgen -source=internal\service\posts\service.go -destination=internal\repository\postgre\mock\postgre_mock.go

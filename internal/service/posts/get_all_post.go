@@ -7,8 +7,8 @@ import (
 	"github.com/AntonovIv/post_graphQlservice/graph/model"
 )
 
-func (p *postService) GetAllPosts(ctx context.Context) ([]*model.PostListEl, error) {
-	postAllResp, err := p.repo.GetAllPosts(ctx)
+func (p *PostService) GetAllPosts(ctx context.Context) ([]*model.PostListEl, error) {
+	postAllResp, err := p.Repo.GetAllPosts(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("service GetAllPosts err: %w", err)
 	}

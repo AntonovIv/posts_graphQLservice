@@ -19,11 +19,12 @@ import (
 func (r *commentResolver) Replies(ctx context.Context, obj *model.Comment, limit *int, offset *int) ([]*model.Comment, error) {
 	r.logger.DebugContext(ctx, "get replydComments request")
 
+	// for invalid data using limit =0, offset =0
 	lim, offs := validation.PagingValidate(limit, offset)
 	rsCommentsResp, err := r.postService.GetRepliesComments(ctx, obj, lim, offs)
 	if errors.Is(err, models.ErrNotFound) {
 		return nil, &gqlerror.Error{
-			Message: "bad request:",
+			Message: "not found",
 		}
 	} else if err != nil {
 		r.logger.ErrorContext(ctx, "get replyComments request: err",

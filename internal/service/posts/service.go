@@ -7,7 +7,7 @@ import (
 	serviceTm "github.com/AntonovIv/post_graphQlservice/internal/service"
 )
 
-type postRepo interface {
+type PostRepo interface {
 	serviceTm.TransactionManager
 
 	CreatePost(context.Context, model.CreatePostReq) (model.PostListEl, error)
@@ -25,14 +25,14 @@ type ObserverPool interface {
 	NotifyObservers(int, model.Comment) error
 }
 
-type postService struct {
-	repo postRepo
+type PostService struct {
+	Repo PostRepo
 	ObserverPool
 }
 
-func New(repo postRepo, obsPool ObserverPool) *postService {
-	return &postService{
-		repo:         repo,
+func New(repo PostRepo, obsPool ObserverPool) *PostService {
+	return &PostService{
+		Repo:         repo,
 		ObserverPool: obsPool,
 	}
 }

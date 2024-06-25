@@ -11,7 +11,7 @@ services:
     environment:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=record_db
+      - POSTGRES_DB=postService
     ports:
       - "5432:5432"
 

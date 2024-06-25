@@ -7,8 +7,8 @@ import (
 	"github.com/AntonovIv/post_graphQlservice/graph/model"
 )
 
-func (p *postService) CreatePost(ctx context.Context, post model.CreatePostReq) (*model.PostListEl, error) {
-	postResp, err := p.repo.CreatePost(ctx, post)
+func (p *PostService) CreatePost(ctx context.Context, post model.CreatePostReq) (*model.PostListEl, error) {
+	postResp, err := p.Repo.CreatePost(ctx, post)
 	if err != nil {
 		return nil, fmt.Errorf("create CreatePost err: %w", err)
 	}

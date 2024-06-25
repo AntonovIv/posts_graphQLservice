@@ -7,8 +7,8 @@ import (
 	"github.com/AntonovIv/post_graphQlservice/graph/model"
 )
 
-func (p *postService) GetCommentsForPost(ctx context.Context, post *model.Post, limit, offset int) ([]*model.Comment, error) {
-	commentsResp, err := p.repo.GetCommentsForPost(ctx, post, limit, offset)
+func (p *PostService) GetCommentsForPost(ctx context.Context, post *model.Post, limit, offset int) ([]*model.Comment, error) {
+	commentsResp, err := p.Repo.GetCommentsForPost(ctx, post, limit, offset)
 	if err != nil {
 		return nil, fmt.Errorf("service GetCommentsForPost err: %w", err)
 	}
