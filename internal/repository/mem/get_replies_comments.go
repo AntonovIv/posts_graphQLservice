@@ -11,7 +11,7 @@ func (r *MemDb) GetRepliesComments(ctx context.Context, com *model.Comment, limi
 	r.c.RLock()
 	defer r.c.RUnlock()
 
-	if com.ID > r.c.commCounter || limit*offset > len(r.c.comments)+1 {
+	if com.ID > r.c.commCounter || limit*offset >= len(r.c.comments) {
 		return nil, models.ErrNotFound
 	}
 
@@ -22,18 +22,17 @@ func (r *MemDb) GetRepliesComments(ctx context.Context, com *model.Comment, limi
 			res = append(res, comment)
 		}
 	}
-	if len(res) == 0 || limit*offset > len(res)+1 {
-		return res, nil
+	if len(res) == 0 || limit*offset >= len(res) {
+		return nil, models.ErrNotFound
 	}
 
-	if (limit*offset)+limit > len(res)+1 {
+	if (limit*offset)+limit > len(res) {
 		hres := make([]model.Comment, len(res))
 		_ = copy(hres, res[limit*offset:])
 		return hres, nil
 	}
-	//пахнущие костыли исправить
-	hres := make([]model.Comment, len(res[limit*offset:(limit*offset)+limit]))
-	_ = copy(hres, res[limit*offset:(limit*offset)+limit])
+	hres := make([]model.Comment, len(res[limit*offset:(limit*offset)+limit-1]))
+	_ = copy(hres, res[limit*offset:(limit*offset)+limit-1])
 
 	return hres, nil
 }

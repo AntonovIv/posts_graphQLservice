@@ -13,7 +13,7 @@ func (r *MemDb) GetCommentsForPost(ctx context.Context, post *model.Post, limit,
 
 	var res []model.Comment
 
-	if limit*offset > len(r.c.comments)+1 {
+	if limit*offset >= len(r.c.comments) {
 		return nil, models.ErrNotFound
 	}
 
@@ -23,7 +23,7 @@ func (r *MemDb) GetCommentsForPost(ctx context.Context, post *model.Post, limit,
 			res = append(res, hres)
 		}
 	}
-	if len(res) == 0 || limit*offset > len(res)+1 {
+	if len(res) == 0 || limit*offset >= len(res) {
 		return nil, models.ErrNotFound
 	}
 
@@ -33,8 +33,8 @@ func (r *MemDb) GetCommentsForPost(ctx context.Context, post *model.Post, limit,
 		return hres, nil
 	}
 
-	hres := make([]model.Comment, len(res[limit*offset:(limit*offset)+limit]))
-	_ = copy(hres, res[limit*offset:(limit*offset)+limit])
+	hres := make([]model.Comment, len(res[limit*offset:(limit*offset)+limit-1]))
+	_ = copy(hres, res[limit*offset:(limit*offset)+limit-1])
 
 	return hres, nil
 }
