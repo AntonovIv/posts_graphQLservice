@@ -11,18 +11,21 @@
 
    Запуск с postgre
 
-2. `make docker.run.db` - запуск postgres
-3. `make run.srv.postgre` - запуск сервиса
+2. `make run.docker.db` - запуск postgres
+3. `make run.local.postgre` - запуск сервиса
 
    Запуск с in memory
 
-4. `make run.srv.memory` - запуск сервиса
+4. `make run.local.memory` - запуск сервиса
 
 ### Запуск в Docker
 
 1. Клонирование репозитория
-2. `make run.all.docker` - запуск сервиса и postgres в Docker
-3. Для изменения базы данных изменить в .env DB_TYPE=memory
+2. `make run.docker.withpostgre` - запуск сервиса и postgres в Docker
+
+   Запуск с in memory
+
+3. `make run.docker.memory` - запуск сервиса и in memory db в Docker
 
 ### Остановка Docker
 
