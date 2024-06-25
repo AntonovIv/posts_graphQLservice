@@ -1,14 +1,17 @@
 graph.gen:
 	go run github.com/99designs/gqlgen generate
 
-run.srv.memory:
+run.lockal.memory:
 	go run ./cmd/main.go --container=n --db=memory
 
-run.srv.postgre:
+run.lockal.postgre:
 	go run ./cmd/main.go --container=n 
 
-run.all.docker:
-	docker compose up
+run.docker.postgre:
+	docker compose -f docker-compose.yaml up
+
+run.docker.memory:
+	docker compose -f docker-compose.mem.yaml up 
 
 run.db.docker:
 	docker compose up db

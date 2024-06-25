@@ -60,7 +60,6 @@ func main() {
 	http.Handle("/query", srv)
 
 	logger.Debug("server start",
-		"cfg", cfg,
 		"port", cfg.Port,
 		"dbType", cfg.DbConfig.DbType,
 		"dbPort", cfg.DbConfig.Port)
