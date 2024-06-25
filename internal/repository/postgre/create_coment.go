@@ -22,5 +22,6 @@ func (r *repository) CreateComment(ctx context.Context, input model.CreateCommen
 		Post:    input.Post,
 		Author:  input.Author,
 		Content: input.Content,
+		ReplyTo: input.ReplyTo,
 	}, nil
 }

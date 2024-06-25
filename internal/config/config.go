@@ -10,6 +10,7 @@ import (
 
 type Config struct {
 	Env      string         `env:"ENV" type-defolt:"local"`
+	EnvFile  string         `env:"ENV_FILE" type-defolt:".env"`
 	Port     int            `env:"PORT_APP" type-defolt:"8080"`
 	DbConfig postgre.Config `env:"DB_CONFIG"`
 }
@@ -27,12 +28,17 @@ func MustLoadCfg() *Config {
 	return &cfg
 }
 func fetchDbType() {
-	var res string
+	var db string
+	var cont string
 
-	flag.StringVar(&res, "db", "", "what db to use: memory or postgres")
+	flag.StringVar(&db, "db", "", "what db to use: memory or postgres")
+	flag.StringVar(&cont, "container", "", "is it run in docker container?: y[yes]/n[no]")
 	flag.Parse()
 
-	if res != "" {
-		os.Setenv("DB_TYPE", res)
+	if db != "" {
+		os.Setenv("DB_TYPE", db)
+	}
+	if cont == "n" {
+		os.Setenv("DB_HOSTNAME", "localhost")
 	}
 }

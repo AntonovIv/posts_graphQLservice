@@ -17,5 +17,9 @@ func (r *repository) CreatePost(ctx context.Context, post model.CreatePostReq) (
 		return model.PostListEl{}, fmt.Errorf("repository CreatePost err: %w", err)
 	}
 
-	return model.PostListEl{}, nil
+	return model.PostListEl{
+		Name:    post.Name,
+		Content: post.Content,
+		Author:  post.Author,
+	}, nil
 }
