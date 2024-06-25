@@ -1,4 +1,4 @@
-package test
+package posts
 
 import (
 	"context"
@@ -7,7 +7,6 @@ import (
 	"github.com/AntonovIv/post_graphQlservice/graph/model"
 	"github.com/AntonovIv/post_graphQlservice/internal/models"
 	mockRepo "github.com/AntonovIv/post_graphQlservice/internal/repository/postgre/mock"
-	"github.com/AntonovIv/post_graphQlservice/internal/service/posts"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -32,8 +31,8 @@ func newTestDeps(t *testing.T) *testDeps {
 	}
 }
 
-func (td *testDeps) newService() *posts.PostService {
-	return posts.New(td.repo, td.obs)
+func (td *testDeps) newService() *PostService {
+	return New(td.repo, td.obs)
 }
 
 func TestCreateComment(t *testing.T) {
@@ -45,8 +44,8 @@ func TestCreateComment(t *testing.T) {
 		{
 			name: "test case: OK",
 			input: model.CreateCommentReq{
-				Author:  "test",
-				Content: "test",
+				Author:  "test author",
+				Content: "test content",
 				Post:    1,
 				ReplyTo: nil,
 			},
@@ -66,10 +65,10 @@ func TestCreateComment(t *testing.T) {
 			},
 		},
 		{
-			name: "test case: getpost in transaction failed",
+			name: "test case: repo func getpost in transaction err",
 			input: model.CreateCommentReq{
-				Author:  "test",
-				Content: "test",
+				Author:  "test author",
+				Content: "test content",
 				Post:    1,
 				ReplyTo: nil,
 			},
@@ -83,8 +82,8 @@ func TestCreateComment(t *testing.T) {
 		{
 			name: "test case: comment not alowed",
 			input: model.CreateCommentReq{
-				Author:  "test",
-				Content: "test",
+				Author:  "test autor",
+				Content: "test content",
 				Post:    1,
 				ReplyTo: nil,
 			},
@@ -96,10 +95,10 @@ func TestCreateComment(t *testing.T) {
 			},
 		},
 		{
-			name: "test case: create comment in transaction failed",
+			name: "test case: repo func create comment in transaction failed",
 			input: model.CreateCommentReq{
-				Author:  "test",
-				Content: "test",
+				Author:  "test author",
+				Content: "test content",
 				Post:    1,
 				ReplyTo: nil,
 			},
@@ -128,8 +127,15 @@ func TestCreateComment(t *testing.T) {
 			)
 
 			service := td.newService()
-			_, err := service.CreateComment(context.Background(), tc.input)
+			resp, err := service.CreateComment(context.Background(), tc.input)
 
+			if resp != nil {
+				require.Equal(t, model.Comment{
+					Author:  tc.input.Author,
+					Content: tc.input.Content,
+					Post:    tc.input.Post,
+					ReplyTo: tc.input.ReplyTo}, *resp)
+			}
 			require.ErrorIs(t, err, expErr)
 		})
 	}

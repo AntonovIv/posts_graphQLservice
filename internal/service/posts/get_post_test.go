@@ -1,4 +1,4 @@
-package test
+package posts
 
 import (
 	"context"
@@ -15,28 +15,30 @@ func TestGetPost(t *testing.T) {
 		name        string
 		postid      int
 		postSrvResp *model.Post
-		behavior    func(td *testDeps, id int) error
+		behavior    func(td *testDeps, id int, postSrvResp *model.Post) error
 	}{
 		{
 			name:   "test case: OK",
 			postid: 1,
 			postSrvResp: &model.Post{
-				ID: 1,
+				ID:              1,
+				Name:            "test name",
+				Author:          "test author",
+				Content:         "test content",
+				CommentsAllowed: true,
 			},
-			behavior: func(td *testDeps, id int) error {
+			behavior: func(td *testDeps, id int, postSrvResp *model.Post) error {
 				td.repo.EXPECT().
 					GetPostByID(gomock.Any(), id).
-					Return(model.Post{
-						ID: 1,
-					}, nil)
+					Return(*postSrvResp, nil)
 				return nil
 			},
 		},
 		{
-			name:        "test case: get post by id  failed",
+			name:        "test case: repo get post err",
 			postid:      1,
 			postSrvResp: nil,
-			behavior: func(td *testDeps, id int) error {
+			behavior: func(td *testDeps, id int, postSrvResp *model.Post) error {
 				td.repo.EXPECT().
 					GetPostByID(gomock.Any(), id).
 					Return(model.Post{}, assert.AnError)
@@ -53,7 +55,7 @@ func TestGetPost(t *testing.T) {
 			expErr := tc.behavior(
 				td,
 				tc.postid,
-			)
+				tc.postSrvResp)
 
 			service := td.newService()
 			post, err := service.GetPostByID(context.Background(), tc.postid)

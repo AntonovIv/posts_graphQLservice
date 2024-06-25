@@ -1,4 +1,4 @@
-package test
+package posts
 
 import (
 	"context"
@@ -20,15 +20,15 @@ func TestCreatePost(t *testing.T) {
 		{
 			name: "test case: OK",
 			post: model.CreatePostReq{
-				Name:            "test",
-				Content:         "test",
-				Author:          "test",
+				Name:            "test name",
+				Content:         "test content",
+				Author:          "test author",
 				CommentsAllowed: true,
 			},
 			postSrvResp: &model.PostListEl{ID: 1,
-				Name:    "test",
-				Author:  "test",
-				Content: "test"},
+				Name:    "test name",
+				Author:  "test author",
+				Content: "test content"},
 			behavior: func(td *testDeps, post model.CreatePostReq) error {
 				td.repo.EXPECT().
 					CreatePost(gomock.Any(), post).
@@ -65,9 +65,9 @@ func TestCreatePost(t *testing.T) {
 			)
 
 			service := td.newService()
-			post, err := service.CreatePost(context.Background(), tc.post)
+			resp, err := service.CreatePost(context.Background(), tc.post)
 
-			require.Equal(t, tc.postSrvResp, post)
+			require.Equal(t, tc.postSrvResp, resp)
 			require.ErrorIs(t, err, expErr)
 		})
 	}

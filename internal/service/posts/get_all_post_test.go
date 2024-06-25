@@ -1,4 +1,4 @@
-package test
+package posts
 
 import (
 	"context"
@@ -20,10 +20,16 @@ func TestGetAllPost(t *testing.T) {
 			name: "test case: OK",
 			allPost: []model.PostListEl{
 				{
-					ID: 1,
+					ID:      1,
+					Name:    "test name",
+					Author:  "test author",
+					Content: "test content",
 				},
 				{
-					ID: 2,
+					ID:      2,
+					Name:    "test name 2",
+					Author:  "test author 2",
+					Content: "test content 2",
 				},
 			},
 			behavior: func(td *testDeps, allPost []model.PostListEl) error {
@@ -34,7 +40,7 @@ func TestGetAllPost(t *testing.T) {
 			},
 		},
 		{
-			name:    "test case: get all posts failed",
+			name:    "test case: repo func get all post err",
 			allPost: []model.PostListEl{},
 			behavior: func(td *testDeps, allPost []model.PostListEl) error {
 				td.repo.EXPECT().
@@ -56,12 +62,14 @@ func TestGetAllPost(t *testing.T) {
 			)
 
 			service := td.newService()
-			postsResp, err := service.GetAllPosts(context.Background())
+			resp, err := service.GetAllPosts(context.Background())
 
-			if postsResp != nil {
-				require.Equal(t, tc.allPost[0], *postsResp[0])
+			if resp != nil {
+				require.Equal(t, len(tc.allPost), len(resp))
+				for i := range tc.allPost {
+					require.Equal(t, tc.allPost[i], *resp[i])
+				}
 			}
-			require.Equal(t, len(tc.allPost), len(postsResp))
 			require.ErrorIs(t, err, expErr)
 		})
 	}

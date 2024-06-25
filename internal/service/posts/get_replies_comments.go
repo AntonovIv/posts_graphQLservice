@@ -23,5 +23,5 @@ func (p *PostService) GetRepliesComments(ctx context.Context, obj *model.Comment
 			ReplyTo: comment.ReplyTo,
 		}
 	}
-	return res, err
+	return res, nil
 }
