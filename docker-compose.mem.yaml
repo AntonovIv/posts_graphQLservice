@@ -1,0 +1,14 @@
+version: "3.9"
+volumes:
+  data:
+
+services:
+  posts-app:
+    build: ./
+    container_name: posts-app-memory
+    ports:
+      - ${PORT_APP}:${PORT_APP}
+    environment:
+      - DB_TYPE=memory
+
+

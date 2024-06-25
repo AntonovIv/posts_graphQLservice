@@ -22,6 +22,7 @@
 
 1. Клонирование репозитория
 2. `make run.all.docker` - запуск сервиса и postgres в Docker
+3. Для изменения базы данных изменить в .env DB_TYPE=memory
 
 ### Остановка Docker
 
