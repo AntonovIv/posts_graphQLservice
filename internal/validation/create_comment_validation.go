@@ -11,10 +11,10 @@ func CreateCommentValidate(comment model.CreateCommentReq) error {
 		return fmt.Errorf("forbidden empty field")
 	}
 
-	if len([]rune(comment.Content)) > maxCommentLength {
+	if len([]rune(comment.Content)) > MaxCommentLength {
 		return fmt.Errorf("invalid post content length")
 	}
-	if len([]rune(comment.Author)) > maxAuthorLength {
+	if len([]rune(comment.Author)) > MaxAuthorLength {
 		return fmt.Errorf("invalid post author length")
 	}
 

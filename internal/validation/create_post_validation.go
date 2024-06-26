@@ -10,10 +10,10 @@ func CreatePostValidate(post model.CreatePostReq) error {
 	if post.Name == "" || post.Content == "" || post.Author == "" {
 		return fmt.Errorf("forbidden empty field")
 	}
-	if len([]rune(post.Name)) > maxPostNameLength {
+	if len([]rune(post.Name)) > MaxPostNameLength {
 		return fmt.Errorf("invalid post name length")
 	}
-	if len([]rune(post.Author)) > maxAuthorLength {
+	if len([]rune(post.Author)) > MaxAuthorLength {
 		return fmt.Errorf("invalid post author length")
 	}
 

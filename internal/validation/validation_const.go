@@ -1,8 +1,8 @@
 package validation
 
 const (
-	maxCommentLength  = 2000
-	maxPostLength     = 2000
-	maxAuthorLength   = 64
-	maxPostNameLength = 255
+	MaxCommentLength  = 2000
+	MaxPostLength     = 2000
+	MaxAuthorLength   = 64
+	MaxPostNameLength = 255
 )

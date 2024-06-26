@@ -8,39 +8,43 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestCreateCommentValidate(t *testing.T) {
+func TestCreatePostValidate(t *testing.T) {
 	testCases := []struct {
-		name    string
-		comment model.CreateCommentReq
-		expErr  bool
+		name   string
+		post   model.CreatePostReq
+		expErr bool
 	}{
 		{
 			name: "empty fields",
-			comment: model.CreateCommentReq{
+			post: model.CreatePostReq{
+				Name:    "",
 				Author:  "",
 				Content: "",
 			},
 			expErr: true,
 		},
 		{
-			name: "to long content",
-			comment: model.CreateCommentReq{
+			name: "to long name",
+			post: model.CreatePostReq{
+				Name:    string(make([]rune, validation.MaxPostNameLength+1)),
 				Author:  "test author",
-				Content: string(make([]rune, 2001)),
+				Content: "test content",
 			},
 			expErr: true,
 		},
 		{
 			name: "to long author",
-			comment: model.CreateCommentReq{
-				Author:  string(make([]rune, 65)),
+			post: model.CreatePostReq{
+				Name:    "test name",
+				Author:  string(make([]rune, validation.MaxAuthorLength+1)),
 				Content: "test content",
 			},
 			expErr: true,
 		},
 		{
 			name: "ok",
-			comment: model.CreateCommentReq{
+			post: model.CreatePostReq{
+				Name:    "test ok",
 				Author:  "test ok",
 				Content: "test ok",
 			},
@@ -50,7 +54,7 @@ func TestCreateCommentValidate(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 
-			err := validation.CreateCommentValidate(tc.comment)
+			err := validation.CreatePostValidate(tc.post)
 			if tc.expErr {
 				require.Error(t, err)
 			} else {
