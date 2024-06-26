@@ -10,7 +10,6 @@ import (
 	mockSrv "github.com/AntonovIv/post_graphQlservice/internal/service/posts/mock"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-	"github.com/vektah/gqlparser/v2/gqlerror"
 )
 
 type testDeps struct {
@@ -66,12 +65,8 @@ func TestGetAllPosts(t *testing.T) {
 			behavior: func(td *testDeps, resp []*model.PostListEl) error {
 				td.service.EXPECT().
 					GetAllPosts(gomock.Any()).
-					Return(nil, &gqlerror.Error{
-						Message: "internal server error",
-					})
-				return &gqlerror.Error{
-					Message: "internal server error",
-				}
+					Return(nil, models.ErrInternalServerResolver)
+				return models.ErrInternalServerResolver
 			},
 		},
 		{
@@ -81,9 +76,7 @@ func TestGetAllPosts(t *testing.T) {
 				td.service.EXPECT().
 					GetAllPosts(gomock.Any()).
 					Return(nil, models.ErrNotFound)
-				return &gqlerror.Error{
-					Message: "posts not found",
-				}
+				return models.ErrNotFoundResolver
 			},
 		},
 	}
@@ -99,7 +92,7 @@ func TestGetAllPosts(t *testing.T) {
 
 			resp, err := srv.Query().GetAllPosts(context.Background())
 
-			require.Equal(t, err, expErr)
+			require.Equal(t, expErr, err)
 			require.Equal(t, tc.resp, resp)
 		})
 
