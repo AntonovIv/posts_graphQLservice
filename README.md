@@ -84,7 +84,7 @@ query GetPostById {
       author
       content
       post
-      replies {
+      replies(limit: 2, offset: 0) {
         id
         author
         content
