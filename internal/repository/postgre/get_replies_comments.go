@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/AntonovIv/post_graphQlservice/graph/model"
+	"github.com/AntonovIv/post_graphQlservice/internal/models"
 	"github.com/georgysavva/scany/v2/pgxscan"
 )
 
@@ -24,6 +25,8 @@ func (r *repository) GetRepliesComments(ctx context.Context, obj *model.Comment,
 	err := pgxscan.Select(ctx, r.db.DB(ctx), &rsComments, query, args...)
 	if err != nil {
 		return nil, fmt.Errorf("pgxscan GetRepliesComments err: %w", err)
+	} else if len(rsComments) == 0 {
+		return nil, models.ErrNotFound
 	}
 
 	return rsComments, nil
