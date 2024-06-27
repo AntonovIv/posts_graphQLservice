@@ -17,4 +17,7 @@ var (
 	ErrNotFoundResolver = &gqlerror.Error{
 		Message: "posts not found",
 	}
+	ErrCommentsNotAllowedResolver = &gqlerror.Error{
+		Message: "bad request: commenting not alowed",
+	}
 )

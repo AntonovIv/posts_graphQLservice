@@ -3,7 +3,6 @@ package graph
 import (
 	"context"
 	"fmt"
-	"log"
 	"testing"
 
 	"github.com/AntonovIv/post_graphQlservice/graph/model"
@@ -64,6 +63,21 @@ func TestCreateComment(t *testing.T) {
 			},
 		},
 		{
+			name: "comments not allowed",
+			commentReq: model.CreateCommentReq{
+				Content: "test content",
+				Author:  "test author",
+				Post:    1,
+				ReplyTo: nil,
+			},
+			behavior: func(td *testDeps, comment model.CreateCommentReq, expResp *model.Comment) error {
+				td.service.EXPECT().
+					CreateComment(gomock.Any(), comment).
+					Return(nil, models.ErrBadPostId)
+				return models.ErrCommentsNotAllowedResolver
+			},
+		},
+		{
 			name: "validation error",
 			commentReq: model.CreateCommentReq{
 				Content: "",
@@ -89,8 +103,6 @@ func TestCreateComment(t *testing.T) {
 			expErr := tc.behavior(td, tc.commentReq, tc.expResp)
 
 			resp, err := srv.Mutation().CreateComment(context.Background(), tc.commentReq)
-			log.Println(resp)
-			log.Println(tc.expResp)
 			require.Equal(t, expErr, err)
 			require.Equal(t, tc.expResp, resp)
 		})
