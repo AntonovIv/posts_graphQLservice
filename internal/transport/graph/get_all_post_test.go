@@ -77,7 +77,7 @@ func TestGetAllPosts(t *testing.T) {
 				td.service.EXPECT().
 					GetAllPosts(gomock.Any()).
 					Return(nil, models.ErrNotFound)
-				return models.ErrNotFoundResolver
+				return models.ErrNotFoundPostResolver
 			},
 		},
 	}

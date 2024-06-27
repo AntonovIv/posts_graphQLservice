@@ -12,7 +12,6 @@ import (
 	"github.com/AntonovIv/post_graphQlservice/graph/model"
 	"github.com/AntonovIv/post_graphQlservice/internal/models"
 	"github.com/AntonovIv/post_graphQlservice/internal/validation"
-	"github.com/vektah/gqlparser/v2/gqlerror"
 )
 
 // Comments is the resolver for the comments field.
@@ -23,16 +22,12 @@ func (r *postResolver) Comments(ctx context.Context, post *model.Post, limit *in
 	lim, offs := validation.PagingValidate(limit, offset)
 	commentsResp, err := r.postService.GetCommentsForPost(ctx, post, lim, offs)
 	if errors.Is(err, models.ErrNotFound) {
-		return nil, &gqlerror.Error{
-			Message: "not found",
-		}
+		return nil, models.ErrNotFoundCommentsResolver
 	} else if err != nil {
 		r.logger.ErrorContext(ctx, "get comments request: err",
 			slog.Any("err", err))
 
-		return nil, &gqlerror.Error{
-			Message: "internal server error",
-		}
+		return nil, models.ErrInternalServerResolver
 	}
 
 	return commentsResp, nil

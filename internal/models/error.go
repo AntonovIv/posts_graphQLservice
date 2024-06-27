@@ -14,9 +14,15 @@ var (
 	ErrInternalServerResolver = &gqlerror.Error{
 		Message: "internal server error",
 	}
-	ErrNotFoundResolver = &gqlerror.Error{
+
+	ErrNotFoundPostResolver = &gqlerror.Error{
 		Message: "posts not found",
 	}
+
+	ErrNotFoundCommentsResolver = &gqlerror.Error{
+		Message: "comments not found",
+	}
+
 	ErrCommentsNotAllowedResolver = &gqlerror.Error{
 		Message: "bad request: commenting not alowed",
 	}

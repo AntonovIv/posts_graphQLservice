@@ -33,17 +33,12 @@ func (r *queryResolver) GetPostByID(ctx context.Context, id int) (*model.Post, e
 		r.logger.ErrorContext(ctx, "getPostById request: err",
 			slog.Any("err", err))
 
-		return nil, &gqlerror.Error{
-			Message: "post not found",
-		}
+		return nil, models.ErrNotFoundPostResolver
 	} else if err != nil {
 		r.logger.ErrorContext(ctx, "getPostById request: err",
 			slog.Any("err", err))
 
-		return nil, &gqlerror.Error{
-			Message: "internal server error",
-		}
-
+		return nil, models.ErrInternalServerResolver
 	}
 
 	return postResp, nil

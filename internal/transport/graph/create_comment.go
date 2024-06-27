@@ -31,17 +31,13 @@ func (r *mutationResolver) CreateComment(ctx context.Context, input model.Create
 	if errors.Is(err, models.ErrBadPostId) {
 		r.logger.InfoContext(ctx, "create comment request: err",
 			slog.Any("err", err))
-		return nil, &gqlerror.Error{
-			Message: "bad request: commenting not alowed",
-		}
+		return nil, models.ErrCommentsNotAllowedResolver
 	}
 	if err != nil {
 		r.logger.ErrorContext(ctx, "Create comment request inernal err",
 			slog.Any("err", err))
 
-		return nil, &gqlerror.Error{
-			Message: "internal server error",
-		}
+		return nil, models.ErrInternalServerResolver
 	}
 
 	r.postService.NotifyObservers(commentResp.Post, *commentResp)

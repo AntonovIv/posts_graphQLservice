@@ -5,6 +5,7 @@ import (
 	"log/slog"
 
 	"github.com/AntonovIv/post_graphQlservice/graph/model"
+	"github.com/AntonovIv/post_graphQlservice/internal/models"
 	"github.com/AntonovIv/post_graphQlservice/internal/validation"
 	"github.com/vektah/gqlparser/v2/gqlerror"
 )
@@ -27,9 +28,7 @@ func (r *mutationResolver) CreatePost(ctx context.Context, post model.CreatePost
 		r.logger.ErrorContext(ctx, "Create post request inernal err",
 			slog.Any("err", err))
 
-		return nil, &gqlerror.Error{
-			Message: "internal server error",
-		}
+		return nil, models.ErrInternalServerResolver
 	}
 
 	return postResp, nil
