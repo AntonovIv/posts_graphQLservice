@@ -3,6 +3,7 @@ package graph
 import (
 	"context"
 	"log/slog"
+	"os"
 	"testing"
 
 	"github.com/AntonovIv/post_graphQlservice/graph/model"
@@ -30,7 +31,7 @@ func newTestDeps(t *testing.T) *testDeps {
 }
 
 func (td *testDeps) newSrv() *Resolver {
-	return New(td.service, slog.New(slog.Default().Handler()))
+	return New(td.service, slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelWarn})))
 }
 
 func TestGetAllPosts(t *testing.T) {

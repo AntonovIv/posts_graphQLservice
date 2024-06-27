@@ -2,12 +2,14 @@ package graph
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/AntonovIv/post_graphQlservice/graph/model"
 	"github.com/AntonovIv/post_graphQlservice/internal/models"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
+	"github.com/vektah/gqlparser/v2/gqlerror"
 )
 
 func TestCreatePost(t *testing.T) {
@@ -55,6 +57,20 @@ func TestCreatePost(t *testing.T) {
 					CreatePost(gomock.Any(), post).
 					Return(nil, models.ErrInternalServerResolver)
 				return models.ErrInternalServerResolver
+			},
+		},
+		{
+			name: "validation error",
+			postReq: model.CreatePostReq{
+				Name:            "",
+				Content:         "test content",
+				Author:          "test author",
+				CommentsAllowed: true,
+			},
+			behavior: func(td *testDeps, post model.CreatePostReq) error {
+				return &gqlerror.Error{
+					Message: "bad request: " + fmt.Errorf("forbidden empty field").Error(),
+				}
 			},
 		},
 	}
